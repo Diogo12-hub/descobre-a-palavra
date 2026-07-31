@@ -7,307 +7,356 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <style>
 
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
-body{
 
-    margin:0;
+body {
 
-    background:#121213;
+    margin: 0;
 
-    color:white;
+    background: #121213;
 
-    font-family:Arial,Helvetica,sans-serif;
+    color: white;
 
-    text-align:center;
+    font-family: Arial, Helvetica, sans-serif;
+
+    text-align: center;
+
+}
+
+
+
+h1 {
+
+    margin-top: 25px;
+
+    font-size: 36px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    border-bottom: 1px solid #3a3a3c;
+
+    padding-bottom: 20px;
 
 }
 
-h1{
-
-    margin-top:25px;
-
-    font-size:36px;
-
-    font-weight:bold;
-
-    letter-spacing:3px;
-
-    border-bottom:1px solid #3a3a3c;
-
-    padding-bottom:20px;
-
-}
 
 
 /* TABULEIRO */
 
-.tabuleiro{
 
-    margin-top:30px;
+.tabuleiro {
 
-    display:flex;
+    margin-top: 30px;
 
-    flex-direction:column;
+    display: flex;
 
-    align-items:center;
+    flex-direction: column;
 
-    gap:7px;
+    align-items: center;
 
-}
-
-.linha{
-
-    display:flex;
-
-    gap:7px;
-
-}
-
-.quadrado{
-
-    width:62px;
-
-    height:62px;
-
-    border:2px solid #3a3a3c;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-size:38px;
-
-    font-weight:bold;
-
-    text-transform:uppercase;
-
-    animation:aparecer .2s;
-
-}
-
-@keyframes aparecer{
-
-from{
-transform:scale(.8);
-}
-
-to{
-transform:scale(1);
-}
-
-}
-
-.verde{
-
-background:#538d4e;
-
-border-color:#538d4e;
-
-}
-
-.amarelo{
-
-background:#b59f3b;
-
-border-color:#b59f3b;
-
-}
-
-.cinza{
-
-background:#3a3a3c;
-
-border-color:#3a3a3c;
+    gap: 7px;
 
 }
 
 
-/* INPUT */
 
-input{
+.linha {
 
-margin-top:25px;
+    display: flex;
 
-width:220px;
-
-height:45px;
-
-background:#121213;
-
-color:white;
-
-border:2px solid #3a3a3c;
-
-border-radius:5px;
-
-font-size:28px;
-
-text-align:center;
-
-text-transform:uppercase;
-
-outline:none;
-
-}
-
-input:focus{
-
-border-color:white;
+    gap: 7px;
 
 }
 
 
-/* BOTÃO */
 
-form button{
+.quadrado {
 
-background:#538d4e;
+    width: 62px;
 
-color:white;
+    height: 62px;
 
-border:none;
+    border: 2px solid #3a3a3c;
 
-border-radius:5px;
+    display: flex;
 
-padding:12px 35px;
+    justify-content: center;
 
-font-size:18px;
+    align-items: center;
 
-font-weight:bold;
+    font-size: 38px;
 
-margin-top:15px;
+    font-weight: bold;
 
-cursor:pointer;
+    text-transform: uppercase;
+
+}
+
+
+
+.verde {
+
+    background: #538d4e;
+
+    border-color: #538d4e;
 
 }
 
-form button:hover{
 
-background:#6aaa64;
+
+.amarelo {
+
+    background: #b59f3b;
+
+    border-color: #b59f3b;
 
 }
+
+
+
+.cinza {
+
+    background: #3a3a3c;
+
+    border-color: #3a3a3c;
+
+}
+
+
+
+/* CAIXA TEXTO */
+
+
+input {
+
+    margin-top: 25px;
+
+    width: 220px;
+
+    height: 45px;
+
+    background: #121213;
+
+    color: white;
+
+    border: 2px solid #3a3a3c;
+
+    border-radius: 5px;
+
+    font-size: 28px;
+
+    text-align: center;
+
+    text-transform: uppercase;
+
+    outline: none;
+
+}
+
+
+
+input:focus {
+
+    border-color: white;
+
+}
+
+
+
+/* BOTÕES */
+
+
+form button {
+
+    background: #538d4e;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    padding: 12px 35px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    margin-top: 15px;
+
+    cursor: pointer;
+
+}
+
+
+
+form button:hover {
+
+    background: #6aaa64;
+
+}
+
 
 
 /* TECLADO */
 
-.teclado{
 
-margin-top:30px;
+.teclado {
 
-}
-
-.teclado div{
-
-margin-bottom:8px;
+    margin-top: 30px;
 
 }
 
-.teclado button{
 
-background:#818384;
+.teclado div {
 
-color:white;
-
-border:0;
-
-border-radius:5px;
-
-height:55px;
-
-min-width:42px;
-
-margin:3px;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
+    margin-bottom: 8px;
 
 }
 
-.teclado button:hover{
 
-background:#a0a0a0;
+.teclado button {
+
+    background: #818384;
+
+    color: white;
+
+    border: 0;
+
+    border-radius: 5px;
+
+    height: 55px;
+
+    min-width: 42px;
+
+    margin: 3px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
 
 }
 
-.grande{
 
-min-width:75px!important;
+
+.teclado button:hover {
+
+    background: #a0a0a0;
 
 }
+
+
+
+.grande {
+
+    min-width: 75px !important;
+
+}
+
+
+
+/* BOTÃO NOVO JOGO */
+
+
+.novo {
+
+    background: #b59f3b;
+
+}
+
+
+
+.novo:hover {
+
+    background: #d0b84b;
+
+}
+
 
 
 /* RODAPÉ */
 
-footer{
 
-position:fixed;
+footer {
 
-bottom:10px;
+    position: fixed;
 
-right:15px;
+    bottom: 10px;
 
-font-size:12px;
+    right: 15px;
 
-color:#888;
+    font-size: 12px;
 
-font-family:Arial,Helvetica,sans-serif;
-
-user-select:none;
+    color: #888;
 
 }
 
 
-/* RESPONSIVO */
 
 @media(max-width:500px){
 
-.quadrado{
 
-width:55px;
+.quadrado {
 
-height:55px;
+    width: 55px;
 
-font-size:32px;
+    height: 55px;
 
-}
-
-.teclado button{
-
-height:48px;
-
-min-width:32px;
-
-margin:2px;
+    font-size: 32px;
 
 }
 
+
+
+.teclado button {
+
+    height: 48px;
+
+    min-width: 32px;
+
+    margin: 2px;
+
 }
+
+
+}
+
 
 </style>
 
+
 </head>
+
+
 
 <body>
 
-<h1>🔎 DESCOBRE A PALAVRA</h1>
+
+<h1>DESCOBRE A PALAVRA</h1>
+
+
 
 <div class="tabuleiro">
 
+
 {% for linha in tentativas %}
+
 
 <div class="linha">
 
+
 {% for letra, cor in linha %}
+
 
 <div class="quadrado {{cor}}">
 
@@ -315,25 +364,61 @@ margin:2px;
 
 </div>
 
-{% endfor %}
-
-</div>
 
 {% endfor %}
 
+
 </div>
+
+
+{% endfor %}
+
+
+</div>
+
+
 
 <h2>{{ mensagem }}</h2>
 
+{% if "Parabéns" in mensagem or "Fim do jogo" in mensagem %}
+
 <form method="POST">
 
+<button 
+class="novo"
+name="novo_jogo"
+value="1">
+
+NOVO JOGO
+
+</button>
+
+</form>
+
+
+{% else %}
+
+
+<form method="POST">
+
+
 <input
+
+id="entrada"
+
 name="palavra"
+
 maxlength="5"
+
 autocomplete="off"
-placeholder="PALAVRA">
+
+placeholder="PALAVRA"
+
+>
+
 
 <br>
+
 
 <button>
 
@@ -341,42 +426,64 @@ ENVIAR
 
 </button>
 
+
 </form>
+
+
+{% endif %}
+
+
+
+
 
 <div class="teclado">
 
+
 <div>
 
-<button onclick="letra('Q')">Q</button>
-<button onclick="letra('W')">W</button>
-<button onclick="letra('E')">E</button>
-<button onclick="letra('R')">R</button>
-<button onclick="letra('T')">T</button>
-<button onclick="letra('Y')">Y</button>
-<button onclick="letra('U')">U</button>
-<button onclick="letra('I')">I</button>
-<button onclick="letra('O')">O</button>
-<button onclick="letra('P')">P</button>
+<button type="button" onclick="letra('Q')">Q</button>
+<button type="button" onclick="letra('W')">W</button>
+<button type="button" onclick="letra('E')">E</button>
+<button type="button" onclick="letra('R')">R</button>
+<button type="button" onclick="letra('T')">T</button>
+<button type="button" onclick="letra('Y')">Y</button>
+<button type="button" onclick="letra('U')">U</button>
+<button type="button" onclick="letra('I')">I</button>
+<button type="button" onclick="letra('O')">O</button>
+<button type="button" onclick="letra('P')">P</button>
 
 </div>
 
+
+
 <div>
 
-<button onclick="letra('A')">A</button>
-<button onclick="letra('S')">S</button>
-<button onclick="letra('D')">D</button>
-<button onclick="letra('F')">F</button>
-<button onclick="letra('G')">G</button>
-<button onclick="letra('H')">H</button>
-<button onclick="letra('J')">J</button>
-<button onclick="letra('K')">K</button>
-<button onclick="letra('L')">L</button>
+<button type="button" onclick="letra('A')">A</button>
+<button type="button" onclick="letra('S')">S</button>
+<button type="button" onclick="letra('D')">D</button>
+<button type="button" onclick="letra('F')">F</button>
+<button type="button" onclick="letra('G')">G</button>
+<button type="button" onclick="letra('H')">H</button>
+<button type="button" onclick="letra('J')">J</button>
+<button type="button" onclick="letra('K')">K</button>
+<button type="button" onclick="letra('L')">L</button>
 
 </div>
 
+
+
 <div>
 
-<button class="grande" type="button" onclick="apagar()">⌫</button>
+
+<button
+type="button"
+class="grande"
+onclick="apagar()">
+
+⌫
+
+</button>
+
 
 <button type="button" onclick="letra('Z')">Z</button>
 <button type="button" onclick="letra('X')">X</button>
@@ -386,45 +493,94 @@ ENVIAR
 <button type="button" onclick="letra('N')">N</button>
 <button type="button" onclick="letra('M')">M</button>
 
-</div>
 
 </div>
+
+
+</div>
+
+
+
+
 
 <script>
 
+
 let atual = "";
+
+
 
 function letra(l){
 
+
     if(atual.length < 5){
+
 
         atual += l;
 
+
         document.querySelector(
-            "input[name='palavra']"
+            "#entrada"
         ).value = atual;
+
 
     }
 
+
 }
+
+
+
+
 
 function apagar(){
 
+
     atual = atual.slice(0,-1);
 
+
+
     document.querySelector(
-        "input[name='palavra']"
+        "#entrada"
     ).value = atual;
+
 
 }
 
+
+
+
+// Seleciona a caixa automaticamente ao abrir
+
+window.onload = function(){
+
+
+    let caixa = document.querySelector("#entrada");
+
+
+    if(caixa){
+
+        caixa.focus();
+
+    }
+
+
+};
+
+
 </script>
+
+
+
+
 
 <footer>
 
 © 2026 Diogo Marques. Todos os direitos reservados.
 
 </footer>
+
+
 
 </body>
 
