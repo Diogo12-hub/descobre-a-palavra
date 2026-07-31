@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Descobre a Palavra</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    background:#121213;
+
+    color:white;
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    text-align:center;
+
+}
+
+h1{
+
+    margin-top:25px;
+
+    font-size:36px;
+
+    font-weight:bold;
+
+    letter-spacing:3px;
+
+    border-bottom:1px solid #3a3a3c;
+
+    padding-bottom:20px;
+
+}
+
+
+/* TABULEIRO */
+
+.tabuleiro{
+
+    margin-top:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:7px;
+
+}
+
+.linha{
+
+    display:flex;
+
+    gap:7px;
+
+}
+
+.quadrado{
+
+    width:62px;
+
+    height:62px;
+
+    border:2px solid #3a3a3c;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:38px;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    animation:aparecer .2s;
+
+}
+
+@keyframes aparecer{
+
+from{
+transform:scale(.8);
+}
+
+to{
+transform:scale(1);
+}
+
+}
+
+.verde{
+
+background:#538d4e;
+
+border-color:#538d4e;
+
+}
+
+.amarelo{
+
+background:#b59f3b;
+
+border-color:#b59f3b;
+
+}
+
+.cinza{
+
+background:#3a3a3c;
+
+border-color:#3a3a3c;
+
+}
+
+
+/* INPUT */
+
+input{
+
+margin-top:25px;
+
+width:220px;
+
+height:45px;
+
+background:#121213;
+
+color:white;
+
+border:2px solid #3a3a3c;
+
+border-radius:5px;
+
+font-size:28px;
+
+text-align:center;
+
+text-transform:uppercase;
+
+outline:none;
+
+}
+
+input:focus{
+
+border-color:white;
+
+}
+
+
+/* BOTÃO */
+
+form button{
+
+background:#538d4e;
+
+color:white;
+
+border:none;
+
+border-radius:5px;
+
+padding:12px 35px;
+
+font-size:18px;
+
+font-weight:bold;
+
+margin-top:15px;
+
+cursor:pointer;
+
+}
+
+form button:hover{
+
+background:#6aaa64;
+
+}
+
+
+/* TECLADO */
+
+.teclado{
+
+margin-top:30px;
+
+}
+
+.teclado div{
+
+margin-bottom:8px;
+
+}
+
+.teclado button{
+
+background:#818384;
+
+color:white;
+
+border:0;
+
+border-radius:5px;
+
+height:55px;
+
+min-width:42px;
+
+margin:3px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.teclado button:hover{
+
+background:#a0a0a0;
+
+}
+
+.grande{
+
+min-width:75px!important;
+
+}
+
+
+/* RODAPÉ */
+
+footer{
+
+position:fixed;
+
+bottom:10px;
+
+right:15px;
+
+font-size:12px;
+
+color:#888;
+
+font-family:Arial,Helvetica,sans-serif;
+
+user-select:none;
+
+}
+
+
+/* RESPONSIVO */
+
+@media(max-width:500px){
+
+.quadrado{
+
+width:55px;
+
+height:55px;
+
+font-size:32px;
+
+}
+
+.teclado button{
+
+height:48px;
+
+min-width:32px;
+
+margin:2px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🔎 DESCOBRE A PALAVRA</h1>
+
+<div class="tabuleiro">
+
+{% for linha in tentativas %}
+
+<div class="linha">
+
+{% for letra, cor in linha %}
+
+<div class="quadrado {{cor}}">
+
+{{letra}}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<h2>{{ mensagem }}</h2>
+
+<form method="POST">
+
+<input
+name="palavra"
+maxlength="5"
+autocomplete="off"
+placeholder="PALAVRA">
+
+<br>
+
+<button>
+
+ENVIAR
+
+</button>
+
+</form>
+
+<div class="teclado">
+
+<div>
+
+<button onclick="letra('Q')">Q</button>
+<button onclick="letra('W')">W</button>
+<button onclick="letra('E')">E</button>
+<button onclick="letra('R')">R</button>
+<button onclick="letra('T')">T</button>
+<button onclick="letra('Y')">Y</button>
+<button onclick="letra('U')">U</button>
+<button onclick="letra('I')">I</button>
+<button onclick="letra('O')">O</button>
+<button onclick="letra('P')">P</button>
+
+</div>
+
+<div>
+
+<button onclick="letra('A')">A</button>
+<button onclick="letra('S')">S</button>
+<button onclick="letra('D')">D</button>
+<button onclick="letra('F')">F</button>
+<button onclick="letra('G')">G</button>
+<button onclick="letra('H')">H</button>
+<button onclick="letra('J')">J</button>
+<button onclick="letra('K')">K</button>
+<button onclick="letra('L')">L</button>
+
+</div>
+
+<div>
+
+<button class="grande" type="button" onclick="apagar()">⌫</button>
+
+<button type="button" onclick="letra('Z')">Z</button>
+<button type="button" onclick="letra('X')">X</button>
+<button type="button" onclick="letra('C')">C</button>
+<button type="button" onclick="letra('V')">V</button>
+<button type="button" onclick="letra('B')">B</button>
+<button type="button" onclick="letra('N')">N</button>
+<button type="button" onclick="letra('M')">M</button>
+
+</div>
+
+</div>
+
+<script>
+
+let atual = "";
+
+function letra(l){
+
+    if(atual.length < 5){
+
+        atual += l;
+
+        document.querySelector(
+            "input[name='palavra']"
+        ).value = atual;
+
+    }
+
+}
+
+function apagar(){
+
+    atual = atual.slice(0,-1);
+
+    document.querySelector(
+        "input[name='palavra']"
+    ).value = atual;
+
+}
+
+</script>
+
+<footer>
+
+© 2026 Diogo Marques. Todos os direitos reservados.
+
+</footer>
+
+</body>
+
+</html>
