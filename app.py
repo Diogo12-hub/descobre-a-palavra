@@ -6,12 +6,15 @@ app = Flask(__name__)
 app.secret_key = "descobre_palavra_2026"
 
 
+
 def verificar(tentativa, resposta):
 
     resultado = ["⬜"] * 5
+
     resposta_lista = list(resposta)
 
 
+    # Letras certas no sítio certo
     for i in range(5):
 
         if tentativa[i] == resposta[i]:
@@ -21,6 +24,7 @@ def verificar(tentativa, resposta):
 
 
 
+    # Letras certas no sítio errado
     for i in range(5):
 
         if resultado[i] == "⬜":
@@ -39,17 +43,33 @@ def verificar(tentativa, resposta):
 
 
 
+
 @app.route("/", methods=["GET", "POST"])
 def inicio():
 
 
-    if "palavra" not in session:
+    # Forçar novo jogo
+    if request.args.get("novo") == "1":
+
+        session.clear()
+
+        return redirect("/")
+
+
+
+    # Criar jogo se não existir
+
+    if "palavra" not in session or "tentativas" not in session:
+
+        session.clear()
 
         session["palavra"] = escolher_palavra()
 
         session["tentativas"] = []
 
         session["fim"] = False
+
+        session["mensagem"] = ""
 
 
 
@@ -64,7 +84,8 @@ def inicio():
     if request.method == "POST":
 
 
-        # NOVO JOGO
+
+        # Botão NOVO JOGO
 
         if request.form.get("novo_jogo"):
 
@@ -74,23 +95,29 @@ def inicio():
 
 
 
-        if session["fim"]:
+
+        # Se o jogo terminou
+
+        if session.get("fim"):
 
             return redirect("/")
 
 
 
-        tentativa = request.form["palavra"].lower()
+
+        tentativa = request.form.get("palavra", "").lower()
 
 
 
         if len(tentativa) != 5:
+
 
             mensagem = "A palavra tem de ter 5 letras!"
 
 
 
         elif not palavra_existe(tentativa):
+
 
             mensagem = "Essa palavra não existe!"
 
@@ -99,9 +126,13 @@ def inicio():
         else:
 
 
+
             resultado = verificar(
+
                 tentativa,
+
                 palavra
+
             )
 
 
@@ -129,15 +160,22 @@ def inicio():
 
 
                 linha.append(
+
                     (
+
                         tentativa[i].upper(),
+
                         cor
+
                     )
+
                 )
 
 
 
             tentativas.append(linha)
+
+
 
             session["tentativas"] = tentativas
 
@@ -145,42 +183,54 @@ def inicio():
 
             if tentativa == palavra:
 
-                mensagem = "🎉 Parabéns! Acertaste!"
 
                 session["fim"] = True
+
+                session["mensagem"] = "🎉 Parabéns! Acertaste!"
 
 
 
             elif len(tentativas) >= 6:
 
-                mensagem = (
-                    "😢 Fim do jogo! A palavra era "
-                    + palavra.upper()
-                )
 
                 session["fim"] = True
+
+                session["mensagem"] = (
+
+                    "😢 Fim do jogo! A palavra era "
+
+                    + palavra.upper()
+
+                )
 
 
 
             else:
 
-                mensagem = ""
+
+                session["mensagem"] = ""
 
 
 
-            session["mensagem"] = mensagem
+            session.modified = True
 
+
+            # Evita duplicar no F5
 
             return redirect("/")
 
 
 
-
     return render_template(
+
         "index.html",
+
         tentativas=tentativas,
+
         mensagem=mensagem
+
     )
+
 
 
 
@@ -189,7 +239,11 @@ def inicio():
 if __name__ == "__main__":
 
     app.run(
+
         host="0.0.0.0",
+
         port=5000,
+
         debug=True
+
     )
