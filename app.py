@@ -1,14 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from palavras import escolher_palavra, palavra_existe
 
 app = Flask(__name__)
 
-
-# Palavra do jogo
-palavra = escolher_palavra()
-
-# Lista das tentativas feitas
-tentativas = []
+app.secret_key = "descobre_palavra_2026"
 
 
 def verificar(tentativa, resposta):
@@ -47,92 +42,145 @@ def verificar(tentativa, resposta):
 
 
 
+
 @app.route("/", methods=["GET", "POST"])
 def inicio():
 
-    global palavra
-    global tentativas
+
+    # Criar jogo novo para cada jogador
+
+    if "palavra" not in session:
+
+        session["palavra"] = escolher_palavra()
+
+        session["tentativas"] = []
+
+        session["fim"] = False
+
+
+
+    palavra = session["palavra"]
+
+    tentativas = session["tentativas"]
 
 
     mensagem = ""
 
 
+
     if request.method == "POST":
 
-        tentativa = request.form["palavra"].lower()
 
+        if session["fim"]:
 
-        if len(tentativa) != 5:
-
-            mensagem = "A palavra tem de ter 5 letras!"
-
-
-
-        elif not palavra_existe(tentativa):
-
-            mensagem = "Essa palavra não existe!"
-
+            mensagem = "Atualiza a página para começar um novo jogo."
 
 
         else:
 
-            resultado = verificar(
-                tentativa,
-                palavra
-            )
 
-
-            linha = []
-
-
-            for i in range(5):
-
-                if resultado[i] == "🟩":
-
-                    cor = "verde"
-
-
-                elif resultado[i] == "🟨":
-
-                    cor = "amarelo"
-
-
-                else:
-
-                    cor = "cinza"
+            tentativa = request.form["palavra"].lower()
 
 
 
-                linha.append(
-                    (
-                        tentativa[i].upper(),
-                        cor
-                    )
+            if len(tentativa) != 5:
+
+                mensagem = "A palavra tem de ter 5 letras!"
+
+
+
+            elif not palavra_existe(tentativa):
+
+                mensagem = "Essa palavra não existe!"
+
+
+
+            else:
+
+
+                resultado = verificar(
+                    tentativa,
+                    palavra
                 )
 
 
-            tentativas.append(linha)
+                linha = []
+
+
+                for i in range(5):
+
+
+                    if resultado[i] == "🟩":
+
+                        cor = "verde"
+
+
+                    elif resultado[i] == "🟨":
+
+                        cor = "amarelo"
+
+
+                    else:
+
+                        cor = "cinza"
 
 
 
-            if tentativa == palavra:
+                    linha.append(
+                        (
+                            tentativa[i].upper(),
+                            cor
+                        )
+                    )
 
-                mensagem = "🎉 Parabéns! Acertaste!"
+
+
+                tentativas.append(linha)
 
 
 
-            elif len(tentativas) == 6:
+                session["tentativas"] = tentativas
 
-                mensagem = "😢 Fim do jogo! A palavra era " + palavra.upper()
+                session.modified = True
+
+
+
+
+                if tentativa == palavra:
+
+
+                    mensagem = "🎉 Parabéns! Acertaste!"
+
+                    session["fim"] = True
+
+
+
+
+                elif len(tentativas) == 6:
+
+
+                    mensagem = (
+                        "😢 Fim do jogo! "
+                        "A palavra era "
+                        + palavra.upper()
+                    )
+
+                    session["fim"] = True
 
 
 
 
     return render_template(
+
         "index.html",
+
         tentativas=tentativas,
+
         mensagem=mensagem
+
     )
+
+
 
 
 
@@ -140,8 +188,13 @@ def inicio():
 
 if __name__ == "__main__":
 
+
     app.run(
+
         host="0.0.0.0",
+
         port=5000,
+
         debug=True
+
     )
