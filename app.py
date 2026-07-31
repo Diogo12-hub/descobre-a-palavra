@@ -6,13 +6,11 @@ app = Flask(__name__)
 app.secret_key = "descobre_palavra_2026"
 
 
-
 def verificar(tentativa, resposta):
 
     resultado = ["⬜"] * 5
 
     resposta_lista = list(resposta)
-
 
     # Letras certas no sítio certo
     for i in range(5):
@@ -21,7 +19,6 @@ def verificar(tentativa, resposta):
 
             resultado[i] = "🟩"
             resposta_lista[i] = None
-
 
 
     # Letras certas no sítio errado
@@ -42,8 +39,6 @@ def verificar(tentativa, resposta):
 
 
 
-
-
 @app.route("/", methods=["GET", "POST"])
 def inicio():
 
@@ -58,7 +53,6 @@ def inicio():
 
 
     # Criar jogo se não existir
-
     if "palavra" not in session or "tentativas" not in session:
 
         session.clear()
@@ -66,6 +60,8 @@ def inicio():
         session["palavra"] = escolher_palavra()
 
         session["tentativas"] = []
+
+        session["teclado"] = {}
 
         session["fim"] = False
 
@@ -79,14 +75,15 @@ def inicio():
 
     mensagem = session.get("mensagem", "")
 
+    teclado = session.get("teclado", {})
+
 
 
     if request.method == "POST":
 
 
 
-        # Botão NOVO JOGO
-
+        # Botão novo jogo
         if request.form.get("novo_jogo"):
 
             session.clear()
@@ -95,17 +92,17 @@ def inicio():
 
 
 
-
-        # Se o jogo terminou
-
+        # Se terminou
         if session.get("fim"):
 
             return redirect("/")
 
 
 
-
-        tentativa = request.form.get("palavra", "").lower()
+        tentativa = request.form.get(
+            "palavra",
+            ""
+        ).lower()
 
 
 
@@ -126,13 +123,9 @@ def inicio():
         else:
 
 
-
             resultado = verificar(
-
                 tentativa,
-
                 palavra
-
             )
 
 
@@ -160,15 +153,10 @@ def inicio():
 
 
                 linha.append(
-
                     (
-
                         tentativa[i].upper(),
-
                         cor
-
                     )
-
                 )
 
 
@@ -176,6 +164,39 @@ def inicio():
             tentativas.append(linha)
 
 
+
+            # Atualizar teclado virtual
+            teclado = session.get(
+                "teclado",
+                {}
+            )
+
+
+            for letra, cor in linha:
+
+
+                estado = teclado.get(letra)
+
+
+                # Verde tem sempre prioridade
+                if estado == "verde":
+
+                    continue
+
+
+
+                # Amarelo não passa para cinzento
+                if estado == "amarelo" and cor == "cinza":
+
+                    continue
+
+
+
+                teclado[letra] = cor
+
+
+
+            session["teclado"] = teclado
 
             session["tentativas"] = tentativas
 
@@ -186,7 +207,9 @@ def inicio():
 
                 session["fim"] = True
 
-                session["mensagem"] = "🎉 Parabéns! Acertaste!"
+                session["mensagem"] = (
+                    "🎉 Parabéns! Acertaste!"
+                )
 
 
 
@@ -196,11 +219,9 @@ def inicio():
                 session["fim"] = True
 
                 session["mensagem"] = (
-
-                    "😢 Fim do jogo! A palavra era "
-
+                    "😢 Fim do jogo! "
+                    "A palavra era "
                     + palavra.upper()
-
                 )
 
 
@@ -215,7 +236,8 @@ def inicio():
             session.modified = True
 
 
-            # Evita duplicar no F5
+
+            # Evita duplicar ao atualizar página
 
             return redirect("/")
 
@@ -227,16 +249,17 @@ def inicio():
 
         tentativas=tentativas,
 
-        mensagem=mensagem
+        mensagem=mensagem,
+
+        teclado=teclado
 
     )
 
 
 
 
-
-
 if __name__ == "__main__":
+
 
     app.run(
 

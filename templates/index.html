@@ -30,7 +30,6 @@ body {
 }
 
 
-
 h1 {
 
     margin-top: 25px;
@@ -48,9 +47,7 @@ h1 {
 }
 
 
-
 /* TABULEIRO */
-
 
 .tabuleiro {
 
@@ -67,7 +64,6 @@ h1 {
 }
 
 
-
 .linha {
 
     display: flex;
@@ -75,7 +71,6 @@ h1 {
     gap: 7px;
 
 }
-
 
 
 .quadrado {
@@ -101,7 +96,6 @@ h1 {
 }
 
 
-
 .verde {
 
     background: #538d4e;
@@ -109,7 +103,6 @@ h1 {
     border-color: #538d4e;
 
 }
-
 
 
 .amarelo {
@@ -121,7 +114,6 @@ h1 {
 }
 
 
-
 .cinza {
 
     background: #3a3a3c;
@@ -131,9 +123,7 @@ h1 {
 }
 
 
-
-/* CAIXA TEXTO */
-
+/* INPUT */
 
 input {
 
@@ -162,7 +152,6 @@ input {
 }
 
 
-
 input:focus {
 
     border-color: white;
@@ -170,9 +159,7 @@ input:focus {
 }
 
 
-
 /* BOTÕES */
-
 
 form button {
 
@@ -197,7 +184,6 @@ form button {
 }
 
 
-
 form button:hover {
 
     background: #6aaa64;
@@ -205,9 +191,7 @@ form button:hover {
 }
 
 
-
 /* TECLADO */
-
 
 .teclado {
 
@@ -248,13 +232,32 @@ form button:hover {
 }
 
 
+.teclado button.verde {
 
-.teclado button:hover {
-
-    background: #a0a0a0;
+    background: #538d4e;
 
 }
 
+
+.teclado button.amarelo {
+
+    background: #b59f3b;
+
+}
+
+
+.teclado button.cinza {
+
+    background: #3a3a3c;
+
+}
+
+
+.teclado button:hover {
+
+    opacity: 0.8;
+
+}
 
 
 .grande {
@@ -264,10 +267,6 @@ form button:hover {
 }
 
 
-
-/* BOTÃO NOVO JOGO */
-
-
 .novo {
 
     background: #b59f3b;
@@ -275,16 +274,11 @@ form button:hover {
 }
 
 
-
 .novo:hover {
 
     background: #d0b84b;
 
 }
-
-
-
-/* RODAPÉ */
 
 
 footer {
@@ -302,7 +296,6 @@ footer {
 }
 
 
-
 @media(max-width:500px){
 
 
@@ -315,7 +308,6 @@ footer {
     font-size: 32px;
 
 }
-
 
 
 .teclado button {
@@ -331,19 +323,16 @@ footer {
 
 }
 
-
 </style>
 
 
 </head>
 
 
-
 <body>
 
 
 <h1>DESCOBRE A PALAVRA</h1>
-
 
 
 <div class="tabuleiro">
@@ -377,14 +366,15 @@ footer {
 </div>
 
 
-
 <h2>{{ mensagem }}</h2>
+
 
 {% if "Parabéns" in mensagem or "Fim do jogo" in mensagem %}
 
+
 <form method="POST">
 
-<button 
+<button
 class="novo"
 name="novo_jogo"
 value="1">
@@ -432,25 +422,21 @@ ENVIAR
 
 {% endif %}
 
-
-
-
-
 <div class="teclado">
 
 
 <div>
 
-<button type="button" onclick="letra('Q')">Q</button>
-<button type="button" onclick="letra('W')">W</button>
-<button type="button" onclick="letra('E')">E</button>
-<button type="button" onclick="letra('R')">R</button>
-<button type="button" onclick="letra('T')">T</button>
-<button type="button" onclick="letra('Y')">Y</button>
-<button type="button" onclick="letra('U')">U</button>
-<button type="button" onclick="letra('I')">I</button>
-<button type="button" onclick="letra('O')">O</button>
-<button type="button" onclick="letra('P')">P</button>
+<button type="button" class="{{ teclado.get('Q','') }}" onclick="letra('Q')">Q</button>
+<button type="button" class="{{ teclado.get('W','') }}" onclick="letra('W')">W</button>
+<button type="button" class="{{ teclado.get('E','') }}" onclick="letra('E')">E</button>
+<button type="button" class="{{ teclado.get('R','') }}" onclick="letra('R')">R</button>
+<button type="button" class="{{ teclado.get('T','') }}" onclick="letra('T')">T</button>
+<button type="button" class="{{ teclado.get('Y','') }}" onclick="letra('Y')">Y</button>
+<button type="button" class="{{ teclado.get('U','') }}" onclick="letra('U')">U</button>
+<button type="button" class="{{ teclado.get('I','') }}" onclick="letra('I')">I</button>
+<button type="button" class="{{ teclado.get('O','') }}" onclick="letra('O')">O</button>
+<button type="button" class="{{ teclado.get('P','') }}" onclick="letra('P')">P</button>
 
 </div>
 
@@ -458,15 +444,15 @@ ENVIAR
 
 <div>
 
-<button type="button" onclick="letra('A')">A</button>
-<button type="button" onclick="letra('S')">S</button>
-<button type="button" onclick="letra('D')">D</button>
-<button type="button" onclick="letra('F')">F</button>
-<button type="button" onclick="letra('G')">G</button>
-<button type="button" onclick="letra('H')">H</button>
-<button type="button" onclick="letra('J')">J</button>
-<button type="button" onclick="letra('K')">K</button>
-<button type="button" onclick="letra('L')">L</button>
+<button type="button" class="{{ teclado.get('A','') }}" onclick="letra('A')">A</button>
+<button type="button" class="{{ teclado.get('S','') }}" onclick="letra('S')">S</button>
+<button type="button" class="{{ teclado.get('D','') }}" onclick="letra('D')">D</button>
+<button type="button" class="{{ teclado.get('F','') }}" onclick="letra('F')">F</button>
+<button type="button" class="{{ teclado.get('G','') }}" onclick="letra('G')">G</button>
+<button type="button" class="{{ teclado.get('H','') }}" onclick="letra('H')">H</button>
+<button type="button" class="{{ teclado.get('J','') }}" onclick="letra('J')">J</button>
+<button type="button" class="{{ teclado.get('K','') }}" onclick="letra('K')">K</button>
+<button type="button" class="{{ teclado.get('L','') }}" onclick="letra('L')">L</button>
 
 </div>
 
@@ -485,20 +471,19 @@ onclick="apagar()">
 </button>
 
 
-<button type="button" onclick="letra('Z')">Z</button>
-<button type="button" onclick="letra('X')">X</button>
-<button type="button" onclick="letra('C')">C</button>
-<button type="button" onclick="letra('V')">V</button>
-<button type="button" onclick="letra('B')">B</button>
-<button type="button" onclick="letra('N')">N</button>
-<button type="button" onclick="letra('M')">M</button>
+<button type="button" class="{{ teclado.get('Z','') }}" onclick="letra('Z')">Z</button>
+<button type="button" class="{{ teclado.get('X','') }}" onclick="letra('X')">X</button>
+<button type="button" class="{{ teclado.get('C','') }}" onclick="letra('C')">C</button>
+<button type="button" class="{{ teclado.get('V','') }}" onclick="letra('V')">V</button>
+<button type="button" class="{{ teclado.get('B','') }}" onclick="letra('B')">B</button>
+<button type="button" class="{{ teclado.get('N','') }}" onclick="letra('N')">N</button>
+<button type="button" class="{{ teclado.get('M','') }}" onclick="letra('M')">M</button>
 
 
 </div>
 
 
 </div>
-
 
 
 
@@ -519,16 +504,13 @@ function letra(l){
         atual += l;
 
 
-        document.querySelector(
-            "#entrada"
-        ).value = atual;
+        document.querySelector("#entrada").value = atual;
 
 
     }
 
 
 }
-
 
 
 
@@ -540,17 +522,13 @@ function apagar(){
 
 
 
-    document.querySelector(
-        "#entrada"
-    ).value = atual;
+    document.querySelector("#entrada").value = atual;
 
 
 }
 
 
 
-
-// Seleciona a caixa automaticamente ao abrir
 
 window.onload = function(){
 
@@ -572,14 +550,11 @@ window.onload = function(){
 
 
 
-
-
 <footer>
 
 © 2026 Diogo Marques. Todos os direitos reservados.
 
 </footer>
-
 
 
 </body>
