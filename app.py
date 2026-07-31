@@ -47,7 +47,15 @@ def verificar(tentativa, resposta):
 def inicio():
 
 
-    # Criar jogo novo para cada jogador
+    # Ao carregar/atualizar a página começa novo jogo
+
+    if request.method == "GET":
+
+        session.clear()
+
+
+
+    # Criar jogo novo
 
     if "palavra" not in session:
 
@@ -63,7 +71,6 @@ def inicio():
 
     tentativas = session["tentativas"]
 
-
     mensagem = ""
 
 
@@ -71,9 +78,34 @@ def inicio():
     if request.method == "POST":
 
 
+
+        # Botão NOVO JOGO
+
+        if request.form.get("novo_jogo"):
+
+
+            session.clear()
+
+
+            return render_template(
+
+                "index.html",
+
+                tentativas=[],
+
+                mensagem="Novo jogo iniciado!"
+
+            )
+
+
+
+        # Verificar se terminou
+
         if session["fim"]:
 
-            mensagem = "Atualiza a página para começar um novo jogo."
+
+            mensagem = "O jogo terminou. Começa um novo jogo."
+
 
 
         else:
@@ -85,11 +117,13 @@ def inicio():
 
             if len(tentativa) != 5:
 
+
                 mensagem = "A palavra tem de ter 5 letras!"
 
 
 
             elif not palavra_existe(tentativa):
+
 
                 mensagem = "Essa palavra não existe!"
 
@@ -99,12 +133,17 @@ def inicio():
 
 
                 resultado = verificar(
+
                     tentativa,
+
                     palavra
+
                 )
 
 
+
                 linha = []
+
 
 
                 for i in range(5):
@@ -127,10 +166,15 @@ def inicio():
 
 
                     linha.append(
+
                         (
+
                             tentativa[i].upper(),
+
                             cor
+
                         )
+
                     )
 
 
@@ -146,6 +190,7 @@ def inicio():
 
 
 
+
                 if tentativa == palavra:
 
 
@@ -156,16 +201,23 @@ def inicio():
 
 
 
-                elif len(tentativas) == 6:
+
+                elif len(tentativas) >= 6:
 
 
                     mensagem = (
+
                         "😢 Fim do jogo! "
+
                         "A palavra era "
+
                         + palavra.upper()
+
                     )
 
+
                     session["fim"] = True
+
 
 
 
