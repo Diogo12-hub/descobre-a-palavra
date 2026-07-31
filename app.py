@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 from palavras import escolher_palavra, palavra_existe
 
 app = Flask(__name__)
@@ -47,15 +47,7 @@ def verificar(tentativa, resposta):
 def inicio():
 
 
-    # Ao carregar/atualizar a página começa novo jogo
-
-    if request.method == "GET":
-
-        session.clear()
-
-
-
-    # Criar jogo novo
+    # Criar novo jogo se não existir
 
     if "palavra" not in session:
 
@@ -71,152 +63,139 @@ def inicio():
 
     tentativas = session["tentativas"]
 
-    mensagem = ""
+
+    mensagem = session.pop("mensagem", "")
 
 
 
     if request.method == "POST":
 
 
-
         # Botão NOVO JOGO
 
         if request.form.get("novo_jogo"):
 
-
             session.clear()
 
-
-            return render_template(
-
-                "index.html",
-
-                tentativas=[],
-
-                mensagem="Novo jogo iniciado!"
-
-            )
+            return redirect("/")
 
 
 
-        # Verificar se terminou
+        # Se já acabou
 
-        if session["fim"]:
+        if session.get("fim"):
+
+            return redirect("/")
 
 
-            mensagem = "O jogo terminou. Começa um novo jogo."
+
+        tentativa = request.form["palavra"].lower()
+
+
+
+        if len(tentativa) != 5:
+
+            mensagem = "A palavra tem de ter 5 letras!"
+
+
+
+        elif not palavra_existe(tentativa):
+
+            mensagem = "Essa palavra não existe!"
 
 
 
         else:
 
 
-            tentativa = request.form["palavra"].lower()
+            resultado = verificar(
+
+                tentativa,
+
+                palavra
+
+            )
+
+
+            linha = []
 
 
 
-            if len(tentativa) != 5:
+            for i in range(5):
 
 
-                mensagem = "A palavra tem de ter 5 letras!"
+                if resultado[i] == "🟩":
+
+                    cor = "verde"
+
+
+                elif resultado[i] == "🟨":
+
+                    cor = "amarelo"
+
+
+                else:
+
+                    cor = "cinza"
 
 
 
-            elif not palavra_existe(tentativa):
+                linha.append(
+
+                    (
+
+                        tentativa[i].upper(),
+
+                        cor
+
+                    )
+
+                )
 
 
-                mensagem = "Essa palavra não existe!"
+
+            tentativas.append(linha)
+
+
+            session["tentativas"] = tentativas
+
+
+
+            if tentativa == palavra:
+
+
+                session["fim"] = True
+
+                session["mensagem"] = "🎉 Parabéns! Acertaste!"
+
+                return redirect("/")
+
+
+
+
+
+            elif len(tentativas) >= 6:
+
+
+                session["fim"] = True
+
+                session["mensagem"] = (
+                    "😢 Fim do jogo! A palavra era "
+                    + palavra.upper()
+                )
+
+                return redirect("/")
+
+
 
 
 
             else:
 
 
-                resultado = verificar(
+                session["mensagem"] = ""
 
-                    tentativa,
-
-                    palavra
-
-                )
-
-
-
-                linha = []
-
-
-
-                for i in range(5):
-
-
-                    if resultado[i] == "🟩":
-
-                        cor = "verde"
-
-
-                    elif resultado[i] == "🟨":
-
-                        cor = "amarelo"
-
-
-                    else:
-
-                        cor = "cinza"
-
-
-
-                    linha.append(
-
-                        (
-
-                            tentativa[i].upper(),
-
-                            cor
-
-                        )
-
-                    )
-
-
-
-                tentativas.append(linha)
-
-
-
-                session["tentativas"] = tentativas
-
-                session.modified = True
-
-
-
-
-
-                if tentativa == palavra:
-
-
-                    mensagem = "🎉 Parabéns! Acertaste!"
-
-                    session["fim"] = True
-
-
-
-
-
-                elif len(tentativas) >= 6:
-
-
-                    mensagem = (
-
-                        "😢 Fim do jogo! "
-
-                        "A palavra era "
-
-                        + palavra.upper()
-
-                    )
-
-
-                    session["fim"] = True
+                return redirect("/")
 
 
 
@@ -239,7 +218,6 @@ def inicio():
 
 
 if __name__ == "__main__":
-
 
     app.run(
 
